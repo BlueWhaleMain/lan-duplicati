@@ -1,0 +1,43 @@
+services:
+  duplicati:
+    cap_add:
+      - DAC_OVERRIDE
+      - DAC_READ_SEARCH
+    cap_drop:
+      - ALL
+    env_file: env/duplicati.env
+    image: duplicati/duplicati:${DUPLICATI_VERSION}
+    logging:
+      options:
+        max-file: "${DOCKER_LOG_MAX_FILE:-30}"
+        max-size: "${DOCKER_LOG_MAX_SIZE:-10m}"
+    networks:
+      - proxy_default
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - "data:/data"
+      - "tmp:/tmp"
+      - "backups:/backups"
+  cleaner:
+    command: sh -c "rm -rf /tmp/* && echo clean complete."
+    image: alpine:latest
+    profiles:
+      - cleanup
+    volumes:
+      - "tmp:/tmp"
+networks:
+  proxy_default:
+    external: true
+volumes:
+  data:
+  # 备份大量文件时临时文件系统空间不足
+  tmp:
+  backups:
+    driver: local
+    driver_opts:
+      device: ${DUPLICATI_BACKUPS_DIR}
+      o: 'bind'
+      type: 'none'
