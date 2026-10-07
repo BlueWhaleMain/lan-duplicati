@@ -7,6 +7,11 @@ if exist %IMAGES_SAVE_DIR%\duplicati-%DUPLICATI_VERSION%.tar.gz (
     if ErrorLevel 1 goto failure
 )
 
+if exist %IMAGES_SAVE_DIR%\alpine-latest.tar.gz (
+    docker load -i %IMAGES_SAVE_DIR%\alpine-latest.tar.gz
+    if ErrorLevel 1 goto failure
+)
+
 :complete
 goto end
 
