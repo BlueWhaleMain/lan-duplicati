@@ -3,6 +3,7 @@ call env.cmd
 if ErrorLevel 1 goto failure
 
 if not exist %IMAGES_SAVE_DIR% mkdir %IMAGES_SAVE_DIR%
+if ErrorLevel 1 goto failure
 
 if not exist %IMAGES_SAVE_DIR%\%2.tar.gz goto do_save
 
