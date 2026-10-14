@@ -7,6 +7,6 @@
 out
 gen
 
-dev_runtime
+/dev_runtime
 *.local.env
 docker-compose.override.yml
