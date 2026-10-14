@@ -2,8 +2,8 @@
 call env.cmd
 if ErrorLevel 1 goto failure
 
-echo find old configure %SCRIPTS_RUNTIME_DIR%\duplicati.env ...
-type %SCRIPTS_RUNTIME_DIR%\duplicati.env | wsl grep -w SETTINGS_ENCRYPTION_KEY
+echo find old configure %HOME_DIR%\duplicati.env ...
+type %HOME_DIR%\duplicati.env | wsl grep -w SETTINGS_ENCRYPTION_KEY
 if ErrorLevel 1 goto init
 
 :input_loop
@@ -16,9 +16,9 @@ goto input_loop
 
 :init
 for /f %%i in ('openssl rand -base64 32') do (
-    echo= | set /p a=SETTINGS_ENCRYPTION_KEY=%%i> %SCRIPTS_RUNTIME_DIR%\duplicati.env
+    echo= | set /p a=SETTINGS_ENCRYPTION_KEY=%%i> %HOME_DIR%\duplicati.env
 )
-echo=>>%SCRIPTS_RUNTIME_DIR%\duplicati.env
+echo=>>%HOME_DIR%\duplicati.env
 
 :complete
 goto end
